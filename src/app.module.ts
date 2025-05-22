@@ -1,13 +1,17 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { BoardController } from './board/board.controller';
 import { BoardModule } from './board/board.module';
-import { BoardService } from './board/board.service';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [BoardModule],
-  controllers: [AppController, BoardController],
-  providers: [AppService, BoardService],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), BoardModule],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
