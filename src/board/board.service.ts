@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateBoardDto } from './dto/board.dto';
 
 @Injectable()
 export class BoardService {
@@ -10,7 +11,7 @@ export class BoardService {
     return `get post with id ${id}`;
   }
 
-  createPost() {
+  createPost(createBoardDto: CreateBoardDto) {
     return 'create post';
   }
 

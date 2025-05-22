@@ -1,7 +1,9 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
 import { BoardService } from './board.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreateBoardDto } from './dto/board.dto';
 
+@ApiTags('게시판 API')
 @Controller('board')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
@@ -20,8 +22,8 @@ export class BoardController {
 
   @ApiOperation({ summary: '게시글 생성' })
   @Post('create')
-  createPost() {
-    return this.boardService.createPost();
+  createPost(@Body() createBoardDto: CreateBoardDto) {
+    return this.boardService.createPost(createBoardDto);
   }
 
   @ApiOperation({ summary: '게시글 수정' })
